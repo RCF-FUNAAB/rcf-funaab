@@ -1,6 +1,12 @@
 import React from "react";
+import { Route, Routes } from "react-router";
+import DesktopMessage from "./components/pages/DesktopMessage";
 
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <Routes>
+      <Route path="/" element={<DesktopMessage />} />
+    </Routes>
+  );
 }
 export default App;

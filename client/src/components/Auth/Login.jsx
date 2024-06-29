@@ -14,7 +14,9 @@ const Login = () => {
     <>
       <Box display={{ base: "block", sm: "none" }}>
         <VStack>
-          <Heading>Welcome Back👋</Heading>
+          <Heading color="black-base" fontSize="20px" fontWeight="700">
+            Welcome Back👋
+          </Heading>
           <Text>
             Lorem ipsum dolor sit amet, cons piscing elit lorem ipsumsit.
           </Text>

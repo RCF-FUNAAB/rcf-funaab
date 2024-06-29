@@ -55,10 +55,12 @@ const colors = {
   success: "var(--success)",
   warning: "var(--warning)",
 };
+
+const theme = extendTheme({ colors });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider>
-      <BrowserRouter extendTheme={colors}>
+      <BrowserRouter theme={theme}>
         <App />
       </BrowserRouter>
     </ChakraProvider>

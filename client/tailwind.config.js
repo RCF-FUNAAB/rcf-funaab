@@ -80,6 +80,9 @@ module.exports = {
         "regular-4": "var(--regular-4-font-family)",
         "regular-5": "var(--regular-5-font-family)",
       },
+      boxShadow: {
+        footer: "box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);",
+      },
     },
   },
   plugins: [],

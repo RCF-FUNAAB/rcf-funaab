@@ -7,18 +7,37 @@ import {
   FormControl,
   FormLabel,
   Input,
+  FormErrorMessage,
   Button,
 } from "@chakra-ui/react";
+import { useFormik } from "formik";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
+const validate = (values) => {
+  if (!values.email) {
+    errors.email = "Email is required";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = "Invalid email address";
+  }
+
+  return errors;
+};
 const ForgotPassword = () => {
+  const formik = useFormik({
+    initialValues: { email: "" },
+    validate,
+    onSubmit: (values) => {},
+  });
   return (
     <Box display={{ base: "block", sm: "none" }} w="100%" py="26px" px="24px">
-      <VStack spacing="32px">
+      <VStack as="form" spacing="32px" onSubmit={formik.handleSubmit}>
         <VStack position="relative">
-          <Box position="absolute" top="5px" left="0">
-            <FaArrowLeftLong />
-          </Box>
+          <Link to="/login">
+            <Box position="absolute" top="5px" left="0">
+              <FaArrowLeftLong />
+            </Box>
+          </Link>
           <Heading color="black-base" fontSize="20px" fontWeight="700">
             Forgot Password
           </Heading>
@@ -27,7 +46,10 @@ const ForgotPassword = () => {
           </Text>
         </VStack>
         <VStack w="100%" spacing="100px">
-          <FormControl>
+          <FormControl
+            isRequired
+            isInvalid={formik.errors.email && formik.touched.email}
+          >
             <FormLabel fontSize="14px" fontWeight="700">
               Email Address
             </FormLabel>
@@ -37,13 +59,30 @@ const ForgotPassword = () => {
               borderColor="grey-60"
               type="email"
               placeholder="example@example.com"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
+            <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
           </FormControl>
-          <Button w="100%" h="49px" bg="#04A7EC" color="white" fontWeight="400">
+          <Button
+            type="submit"
+            w="100%"
+            h="49px"
+            bg="#04A7EC"
+            color="white"
+            _hover={{ bg: "blue.500" }}
+            fontWeight="400"
+            isLoading={formik.isSubmitting}
+            isDisabled={formik.isSubmitting}
+          >
             Proceed
           </Button>
         </VStack>
-        <Text color="#04A7EC">Back</Text>
+        <Link to="/">
+          <Text color="#04A7EC">Back</Text>
+        </Link>
       </VStack>
     </Box>
   );

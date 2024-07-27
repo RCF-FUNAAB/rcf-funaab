@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   VStack,
   Flex,
@@ -11,8 +11,9 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
+  useToast,
 } from "@chakra-ui/react";
-import { multiStepContext } from "./StepContext";
+import { multiStepContext } from "./DashboardContext";
 import User from "../../assets/user.jpg";
 import Briefcase from "../../assets/icons/briefcase.svg";
 import NotificationStatus from "../../assets/icons/notification-status.svg";
@@ -25,8 +26,21 @@ import Shop from "../../assets/icons/shop.svg";
 import Community from "../../assets/icons/community.svg";
 import Profile from "../../assets/icons/profile.svg";
 import Add from "../../assets/icons/add.svg";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
-const Dashboard = () => {
+const Dashboard = ({ name, onChange }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (location.state && location.state.toast) {
+      toast(location.state.toast);
+      // Clear state after showing the toast
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, toast, navigate]);
+
   const { optionType, setOptionType } = useContext(multiStepContext);
 
   const profile = [
@@ -63,7 +77,7 @@ const Dashboard = () => {
       w="100%"
       spacing="16px"
       py="26px"
-      px="24px"
+      px="20px"
     >
       <Flex w="100%" justify="space-between" align="center">
         <Flex align="center" gap="8px">
@@ -75,7 +89,9 @@ const Dashboard = () => {
           </Heading>
         </Flex>
         <Flex gap="24px">
-          <Image src={Briefcase} />
+          <Link to="/business">
+            <Image src={Briefcase} />
+          </Link>
           <Image src={NotificationStatus} />
         </Flex>
       </Flex>
@@ -107,7 +123,7 @@ const Dashboard = () => {
           }}
         >
           {profile.map((user, i) => (
-            <VStack>
+            <VStack key={i}>
               <Box border="1px" borderColor="#CE4F35" rounded="full" p="2px">
                 <Avatar w="46px" h="46px" src={user.image}>
                   <AvatarBadge boxSize="0.7em" bg="green.500" />
@@ -172,26 +188,21 @@ const Dashboard = () => {
                 key={option.value}
                 w="100%"
                 h="100%"
-                bg="#04A7EC"
+                bg={selectedValue === option.value ? "#04A7EC" : "#FFF"}
                 rounded="100px"
                 className="cursor-pointer"
                 onClick={() => handleClick(option.value)}
               >
                 <VStack h="100%" justify="center" align="center">
-                  <Text color="#FFF" fontSize="12px">
-                    Business
+                  <Text
+                    color={selectedValue === option.value ? "#FFF" : "#80808C"}
+                    fontSize="12px"
+                  >
+                    {option.label}
                   </Text>
                 </VStack>
               </Box>
             ))}
-
-            <Box w="100%">
-              <VStack h="100%" justify="center" align="center">
-                <Text color="#80808C" fontSize="12px">
-                  Church
-                </Text>
-              </VStack>
-            </Box>
           </Flex>
         </Box>
         <VStack h="30vh" justify="center" align="center">

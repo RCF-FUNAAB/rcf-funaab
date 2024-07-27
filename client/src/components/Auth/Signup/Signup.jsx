@@ -17,18 +17,34 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { React, useState, useContext } from "react";
-import { multiStepContext } from "./LoginContext";
-import DesktopMessage from "../pages/DesktopMessage";
-import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import { multiStepContext } from "./SignupContext";
+import DesktopMessage from "../../pages/DesktopMessage";
+// import ForgotPassword from "./ForgotPassword/ForgotPassword";
 import { useFormik } from "formik";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import Google from "../../assets/icons/google.svg";
-import Apple from "../../assets/icons/apple.svg";
+import Google from "../../../assets/icons/google.svg";
+import Apple from "../../../assets/icons/apple.svg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const validate = (values) => {
   const errors = {};
+
+  if (!values.firstName) {
+    errors.firstName = "First name is required";
+  } else if (values.firstName.length < 3) {
+    errors.firstName = "First name must be 3 characters and above";
+  } else if (values.firstName.length > 20) {
+    errors.firstName = "First name must be less than 20 characters";
+  }
+
+  if (!values.lastName) {
+    errors.lastName = "Last name is required";
+  } else if (values.lastName.length < 2) {
+    errors.lastName = "Last name must be 2 characters and above";
+  } else if (values.lastName.length > 20) {
+    errors.lastName = "Last name must be less than 20 characters";
+  }
 
   if (!values.email) {
     errors.email = "Email is required";
@@ -49,7 +65,7 @@ const validate = (values) => {
   return errors;
 };
 
-const Login = () => {
+const Signup = () => {
   const { setStep, userData, setUserData } = useContext(multiStepContext);
 
   const { currentStep } = useContext(multiStepContext);
@@ -60,26 +76,31 @@ const Login = () => {
   const navigate = useNavigate();
 
   const formik = useFormik({
-    initialValues: { email: "", password: "", termsAccepted: "" },
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      termsAccepted: "",
+    },
     validate,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
-      navigate("/");
-      // setTimeout(() => {
-      //   navigate("/", {
-      //     state: {
-      //       toast: {
-      //         title: "Account Created Successfuly!",
-      //         description:
-      //           "Yoo! Your account has been successfully set up. Your journey starts now.",
-      //         status: "success",
-      //         duration: 3000,
-      //         isClosable: true,
-      //         position: "top",
-      //       },
-      //     },
-      //   });
-      // }, 1000);
+      setTimeout(() => {
+        navigate("/", {
+          state: {
+            toast: {
+              title: "Account Created Successfuly!",
+              description:
+                "Yoo! Your account has been successfully set up. Your journey starts now.",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+              position: "top",
+            },
+          },
+        });
+      }, 1000);
     },
   });
 
@@ -115,10 +136,10 @@ const Login = () => {
               <FaArrowLeftLong />
             </Box>
             <Heading color="black-base" fontSize="20px" fontWeight="700">
-              Welcome Back👋
+              Create your Account
             </Heading>
             <Text align="center">
-              Lorem ipsum dolor sit amet, cons piscing elit lorem ipsumsit.
+              Kindly fill in your details to create an account
             </Text>
           </VStack>
           <VStack w="100%" spacing="12px">
@@ -143,9 +164,49 @@ const Login = () => {
             <VStack w="100%" align="flex-start" spacing="16px">
               <FormControl
                 isRequired
+                isInvalid={formik.errors.firstName && formik.touched.firstName}
+              >
+                <FormLabel color="#01001A" fontSize="14px" fontWeight="700">
+                  First Name
+                </FormLabel>
+                <Input
+                  h="49px"
+                  fontSize="14px"
+                  borderColor="grey-60"
+                  type="text"
+                  placeholder="Other Names"
+                  name="firstName"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                isRequired
+                isInvalid={formik.errors.lastName && formik.touched.lastName}
+              >
+                <FormLabel color="#01001A" fontSize="14px" fontWeight="700">
+                  Last Name
+                </FormLabel>
+                <Input
+                  h="49px"
+                  fontSize="14px"
+                  borderColor="grey-60"
+                  type="text"
+                  placeholder="Surname"
+                  name="lastName"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                <FormErrorMessage>{formik.errors.lastName}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                isRequired
                 isInvalid={formik.errors.email && formik.touched.email}
               >
-                <FormLabel fontSize="14px" fontWeight="700">
+                <FormLabel color="#01001A" fontSize="14px" fontWeight="700">
                   Email Address
                 </FormLabel>
                 <Input
@@ -165,7 +226,7 @@ const Login = () => {
                 isRequired
                 isInvalid={formik.errors.password && formik.touched.password}
               >
-                <FormLabel fontSize="14px" fontWeight="700">
+                <FormLabel color="#01001A" fontSize="14px" fontWeight="700">
                   Password
                 </FormLabel>
                 <InputGroup>
@@ -200,21 +261,26 @@ const Login = () => {
               </FormControl>
               <Flex w="100%">
                 <FormControl
-                  w="40%"
+                  w="100%"
                   isRequired
                   isInvalid={
                     formik.errors.termsAccepted && formik.touched.termsAccepted
                   }
                 >
                   <Checkbox
-                    color="#2B2B40"
-                    fontSize="14px"
                     name="termsAccepted"
                     isChecked={formik.values.termsAccepted}
                     onChange={handleCheckboxChange}
                     onBlur={formik.handleBlur}
                   >
-                    Remember me
+                    <Text color="#2B2B40" fontSize="14px">
+                      I agree to the{" "}
+                      <Link>
+                        <Text as="span" color="#04A7EC">
+                          Terms and Conditions
+                        </Text>
+                      </Link>
+                    </Text>
                   </Checkbox>
                   <FormErrorMessage>
                     {formik.errors.termsAccepted}
@@ -222,7 +288,7 @@ const Login = () => {
                 </FormControl>
 
                 <Spacer />
-                <Link to="/forgot-password">
+                {/* <Link to="/forgot-password">
                   <Text
                     as="button"
                     type="button"
@@ -232,7 +298,7 @@ const Login = () => {
                   >
                     Forgot Password?
                   </Text>
-                </Link>
+                </Link> */}
               </Flex>
             </VStack>
             <Button
@@ -244,14 +310,14 @@ const Login = () => {
               isDisabled={formik.isSubmitting}
               className=" bg-primary-base"
             >
-              Login
+              Create Account
             </Button>
           </VStack>
           <Text fontSize="14px">
-            Don't have an account?{" "}
-            <Link to="/signup">
+            Already have an account?{" "}
+            <Link to="/login">
               <Text as="span" fontSize="14px" color="#04A7EC">
-                Create Account
+                Login
               </Text>
             </Link>
           </Text>
@@ -262,4 +328,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

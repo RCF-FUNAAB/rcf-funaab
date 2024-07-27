@@ -60,17 +60,19 @@ const Business = () => {
               </Text>
             </VStack>
           </VStack>
-          <Button
-            w="100%"
-            h="50px"
-            rounded="4px"
-            bg="#04A7EC"
-            color="white"
-            fontSize="14px"
-            fontWeight="400"
-          >
-            Join
-          </Button>
+          <Link to="https://forms.gle/KKFshJi9urrzg8467">
+            <Button
+              w="100%"
+              h="50px"
+              rounded="4px"
+              bg="#04A7EC"
+              color="white"
+              fontSize="14px"
+              fontWeight="400"
+            >
+              Join
+            </Button>
+          </Link>
         </VStack>
       </Box>
       <DesktopMessage />

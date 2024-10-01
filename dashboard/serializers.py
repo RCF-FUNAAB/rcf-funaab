@@ -33,7 +33,7 @@ class DashboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dashboard
         
-        fields = ['id','user','name','description']
+        fields = ['id','user','name','description','created_at']
         
         def validate_name(self, value):
             if not value:

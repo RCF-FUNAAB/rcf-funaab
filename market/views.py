@@ -21,7 +21,7 @@ class CustomerListView(ListAPIView):
     
     serializer_class = CustomerSerializer
     
-    permissions_classes =[IsAuthenticated]
+    permission_classes =[IsAuthenticated]
  
        
 class CustomeCreateView(CreateAPIView):
@@ -30,7 +30,7 @@ class CustomeCreateView(CreateAPIView):
     
     serializer_class = CustomerSerializer
     
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     
 '''PRODUCT VIEW''' 
@@ -42,7 +42,7 @@ class ProductListView(ListAPIView):
     
     serializer_class = ProductSerializer
     
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     
 class ProductCreateView(CreateAPIView):
@@ -51,12 +51,14 @@ class ProductCreateView(CreateAPIView):
     
     serializer_class = ProductSerializer
     
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 # Handle exception
     
     def post(self, request,*args,**kwargs):
         try:
             return super().post(request,*args,**kwargs)
+        except IntegrityError:
+            raise APIEXCEPTION ('Database integrity error')
         except Exception as e:
             raise APIEXCEPTION ('Error Creating product')
 # I added it to validate price
@@ -74,7 +76,7 @@ class SaleListView(ListAPIView):
     
     serializer_class = SaleSerializer
     
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     
 class SaleCreateView(CreateAPIView):
@@ -83,7 +85,7 @@ class SaleCreateView(CreateAPIView):
     
     serializer_class = ProductSerializer
     
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
  
 '''MARKET VIEW'''
@@ -95,7 +97,7 @@ class Market_TrendListView(ListAPIView):
     
     serializer_class = Market_TrendSerializer
     
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     
 class Market_TrendCreateView(CreateAPIView):
@@ -104,5 +106,5 @@ class Market_TrendCreateView(CreateAPIView):
     
     serializer_class = Market_TrendSerializer
     
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     

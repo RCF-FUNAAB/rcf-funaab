@@ -12,7 +12,7 @@ class Customer(models.Model):
     
     last_name = models.Charfield(max_length = 50)
     
-    phone_number = models.CharField(validators =[RegexValidator (regex = r'\d{11}')],max_length = 11, blank = True)
+    phone_number = models.CharField(validators =[RegexValidator (regex = r'^\d{11}$')],max_length = 11, blank = True)
     
     email = models.EmailField(unique = True)
     

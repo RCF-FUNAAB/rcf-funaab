@@ -1,5 +1,5 @@
 from rest_framework.generics import (
-ListApiView, CreateAPIView, DetailAPIView) 
+ListAPIView, CreateAPIView, RetrieveAPIView) 
 
 from .models import Profile
 
@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework import status
 
-from rest_framework import Response
+from rest_framework.response import Response
 
 
 
@@ -40,7 +40,7 @@ class ProfileCreateView(CreateAPIView):
     
 # profileDetailView
 
-class profileDetailView(DetailView):
+class profileDetailView(RetrieveAPIView):
     
     queryset = Profile.objects.all()
     

@@ -7,11 +7,15 @@ from .Serializers import WidgetSerializer, DashboardSerializer, UserSerializer
 
 from rest_framework.exceptions import APIException
 
-
+from drf_spectacular.utils import extend_schema
 
 
 # Dashboard View
-
+@extend_schema(
+  tags = ['Dashboard'],
+  
+  responses = {200: DashboardSerializer (many = True)},
+)
 class DashboardListView(ListAPIView):
     
     queryset = Dashboard.objects.all()
@@ -20,7 +24,11 @@ class DashboardListView(ListAPIView):
     
     permissions_classes = [IsAuthenticated]
     
-    
+@extend_schema(
+  tags = ['Dashboard'],
+  
+  responses = {201: DashboardSerializer (many = True)},
+)  
 class DashboardCreateView(CreateAPIView):
     
     queryset = Dashboard.objects.all()
@@ -47,7 +55,11 @@ class DashboardCreateView(CreateAPIView):
 
     
 # User View   
-
+@extend_schema(
+  tags = ['User'],
+  
+  responses = {200: UserSerializer (many = True)},
+)
 class UserListView(ListAPIView):
     
     queryset = User.objects.all()
@@ -56,7 +68,12 @@ class UserListView(ListAPIView):
     
     permissions_classes = [IsAuthenticated]
     
-    
+  
+@extend_schema(
+  tags = ['User'],
+  
+  responses = {201:UserSerializer (many = True)},
+)      
 class userCreateView(CreateAPIView):
     
     queryset = User.objects.all()
@@ -69,7 +86,11 @@ class userCreateView(CreateAPIView):
 
 
 # Widget View
-
+@extend_schema(
+  tags = ['Widget'],
+  
+  responses = {200:WidgetSerializer (many = True)},
+)
 class WidgetListView(ListAPIView):
     
     queryset = Widget.objects.all()
@@ -78,7 +99,11 @@ class WidgetListView(ListAPIView):
     
     permissions_classes = [IsAuthenticated]
  
-       
+@extend_schema(
+  tags = ['Widget'],
+  
+  responses = {201:WidgetSerializer (many = True)},
+)       
 class WidgetCreateView(CreateAPIView):
     
     queryset = Widget.objects.all()

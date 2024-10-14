@@ -11,10 +11,14 @@ from rest_framework import status
 
 from rest_framework.response import Response
 
+from drf_spectacular.utils import extend_schema
 
 
 #ProfileListView
-
+@extend_schema(
+  tags = ['Profile'],
+  responses = {200: ProfileSerializer (many = True)},
+)
 class ProfileListView(ListApiView):
     queryset = Profile.objects.all()
     
@@ -23,7 +27,11 @@ class ProfileListView(ListApiView):
     serializer_class = ProfileSerializer
     
 #ProfileCreateView
-
+@extend_schema(
+  tags = ['Profile'],
+  
+  responses = {201: ProfileSerializer (many = True)},
+)
 class ProfileCreateView(CreateAPIView):
     queryset = Profile.objects.all()
     

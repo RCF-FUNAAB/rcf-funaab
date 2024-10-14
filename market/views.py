@@ -8,6 +8,9 @@ from .serializers import CustomerSerializer, ProductSerializer, Market_TrendSeri
 
 from rest_framework.exceptions import APIEXCEPTION
 
+from drf_spectacular.utils import extend_schema
+
+
 # My Views
 
 
@@ -15,6 +18,12 @@ from rest_framework.exceptions import APIEXCEPTION
 
 # Custom View
 
+@extend_schema(
+  tags = ['Customer'],
+  
+  responses = {200: CustomerSerializer (many = True)},
+
+)
 class CustomerListView(ListAPIView):
     
     queryset = Customer.objects.all()
@@ -22,8 +31,16 @@ class CustomerListView(ListAPIView):
     serializer_class = CustomerSerializer
     
     permission_classes =[IsAuthenticated]
+    
+    pagination_class = None
  
-       
+ 
+ 
+@extend_schema(
+  tags = ['Customer'],
+  
+  responses = {201: CustomerSerializer (many = True)},
+)       
 class CustomeCreateView(CreateAPIView):
     
     queryset = Customer.objects.all()
@@ -32,10 +49,19 @@ class CustomeCreateView(CreateAPIView):
     
     permission_classes = [IsAuthenticated]
     
+    pagination_class = None
+    
     
 '''PRODUCT VIEW''' 
                
 # Product View    
+
+@extend_schema(
+  tags = ['Product'],
+  
+  responses = {200: ProductSerializer (many = True)},
+)
+
 class ProductListView(ListAPIView):
     
     queryset = Product.objects.all()
@@ -44,7 +70,13 @@ class ProductListView(ListAPIView):
     
     permission_classes = [IsAuthenticated]
     
-    
+
+
+@extend_schema(
+  tags = ['Product'],
+  
+  responses = {201: ProductSerializer (many = True)},
+)  
 class ProductCreateView(CreateAPIView):
     
     queryset = Product.objects.all()
@@ -70,7 +102,12 @@ class ProductCreateView(CreateAPIView):
 
 '''SALE VIEW'''    
             
-# Sale Views           
+# Sale Views    
+@extend_schema(
+  tags = ['Sale'],
+  
+  responses = {200: SaleSerializer (many = True)},
+)       
 class SaleListView(ListAPIView):
     queryset = Sale.objects.all()
     
@@ -78,7 +115,12 @@ class SaleListView(ListAPIView):
     
     permission_classes = [IsAuthenticated]
     
-    
+
+@extend_schema(
+  tags = ['Sale'],
+  
+  responses = {201:SaleSerializer (many = True)},
+)    
 class SaleCreateView(CreateAPIView):
     
     queryset = Sale.objects.all()
@@ -90,7 +132,12 @@ class SaleCreateView(CreateAPIView):
  
 '''MARKET VIEW'''
 
-#Market Views             
+#Market Views      
+@extend_schema(
+  tags = ['Market_Trend'],
+  
+  responses = {200: ProductSerializer (many = True)},
+)       
 class Market_TrendListView(ListAPIView):
     
     queryset = Market_Trend.objects.all()
@@ -100,6 +147,11 @@ class Market_TrendListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     
     
+@extend_schema(
+  tags = ['Market_Trend'],
+  
+  responses = {201: Market_TrendSerializer (many = True)},
+)
 class Market_TrendCreateView(CreateAPIView):
     
     queryset = Market_Trend.objects.all()
